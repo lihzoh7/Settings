@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Menu</title>
+
+<style>
+  body{
+    margin:0;
+    height:100vh;
+    background:url("https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3") center/cover no-repeat;
+    font-family:sans-serif;
+    color:white;
+    display:flex;
+    flex-direction:column;
+  }
+
+  header{
+    display:flex;
+    justify-content:space-between;
+    padding:10px;
+    font-size:22px;
+  }
+
+  .glass{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0.3;
+    font-size:150px;
+    transform:rotate(15deg);
+  }
+
+  .menu{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    padding:15px;
+  }
+
+  .btn{
+    background:rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.4);
+    padding:18px;
+    text-align:center;
+    border-radius:10px;
+    cursor:pointer;
+  }
+
+  .btn:hover{
+    background:rgba(255,255,255,0.25);
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <span id="logout">🔙</span>
+  <span>👤</span>
+</header>
+
+<div class="glass">🍸</div>
+
+<div class="menu">
+  <div class="btn" onclick="go('prizes.html')">PRIZES</div>
+  <div class="btn" onclick="go('scores.html')">SCORES</div>
+  <div class="btn" onclick="go('play')">PLAY</div>
+  <div class="btn" onclick="go('wallet.html')">WALLET</div>
+</div>
+
+<script type="module">
+import { auth } from './firebase.js';
+import { onAuthStateChanged, signOut } from
+  "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+/* 🔐 AUTH GUARD */
+onAuthStateChanged(auth, user => {
+  if(!user){
+    window.location.href = "../auth/index.html";
+  }
+});
+
+/* LOGOUT */
+document.getElementById("logout").onclick = () => {
+  signOut(auth).then(()=>{
+    window.location.href = "../auth/index.html";
+  });
+};
+
+/* NAVIGATION */
+window.go = (page) => {
+  if(page === "play"){
+    // 🔥 Redirect to Node.js game server
+    window.location.href = "https://YOUR-GAME-SERVER/play";
+  } else {
+    window.location.href = page;
+  }
+};
+</script>
+
+</body>
+</html>
